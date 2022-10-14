@@ -14,7 +14,8 @@ export class ProductController {
         const product = await this.productService.createProduct(createProductDTO);
         return res.status(HttpStatus.OK).json({
             message: 'Product Successfully Created',
-            product
+            product,
+            
         });
     }
 

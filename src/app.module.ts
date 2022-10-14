@@ -6,10 +6,13 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { CategoryModule } from './category/category.module';
 
 @Module({
-  imports: [ProductModule,MongooseModule.forRoot('mongodb://localhost/products-nest-tutorial',{
-    useNewUrlParser: true
-  }), CategoryModule],
+  imports: [
+    MongooseModule.forRoot('mongodb://localhost/products-nest-tutorial',
+    {useNewUrlParser: true}), 
+    CategoryModule,
+    ProductModule],
   controllers: [AppController],
   providers: [AppService],
 })
+
 export class AppModule {}

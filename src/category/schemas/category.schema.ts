@@ -1,6 +1,8 @@
-import { Schema } from "mongoose";
+import * as mongoose from 'mongoose';
 
-export const CategorySchema = new Schema({
+export const CategorySchema = new mongoose.Schema({
     nameCategory: {type:String, required:true},
     descCategory: String
 });
+
+//exports = mongoose.model("Category",CategorySchema);
