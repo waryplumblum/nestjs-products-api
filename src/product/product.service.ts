@@ -25,11 +25,10 @@ export class ProductService {
       }},
       {
         $match:{
-          category:{
-            $elemMatch:{
-              "nameCategory":categoryName
-            }
-          } 
+          $expr:{
+            $eq:['$categories',{$toObjectId: categoryName}]
+          }
+          
         }  
       }
     
@@ -37,7 +36,7 @@ export class ProductService {
 
     return products;
   }
-
+//unwind checar
   async getProducts(): Promise<Product[]> {
 
     const products = await this.productModel
@@ -56,7 +55,10 @@ export class ProductService {
           $match:{
             "category":{$ne:[]}
           }  
-        }
+        }/*,
+        {
+          $unwind: "$category"
+        },*/
     ]);
     
 
