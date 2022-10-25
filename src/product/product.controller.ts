@@ -20,6 +20,14 @@ export class ProductController {
         });
     }
 
+    @Get('/:categoryName')
+    async getProductsByCategory(@Res() res,@Param('categoryName') categoryName){
+        const products = await this.productService.getProductsByCategory(categoryName);
+        return res.status(HttpStatus.OK).json(
+            products
+        )
+    }
+
     @Get('/')
     async getProducts(@Res() res){
         const products = await this.productService.getProducts();

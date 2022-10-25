@@ -13,13 +13,39 @@ export class ProductService {
     @InjectModel('Product') private readonly productModel: Model<Product>,
   ) { }
 
+
+  async getProductsByCategory(categoryName: string):Promise<Product[]>{
+    const products = await this.productModel
+    .aggregate([{
+      $lookup: {
+          from: "categories",
+          localField: "categories",
+          foreignField: "_id",
+          as: "category"
+      }},
+      {
+        $match:{
+          category:{
+            $elemMatch:{
+              "nameCategory":categoryName
+            }
+          } 
+        }  
+      }
+    
+    ])
+
+    return products;
+  }
+
   async getProducts(): Promise<Product[]> {
 
     const products = await this.productModel
 
-      /*.find()*/
+    //.find({"categories":'63460c4e0eb31b8eb014d153'})
       //.populate('categories', 'nameCategory');
       .aggregate([{
+
         $lookup: {
             from: "categories",
             localField: "categories",
@@ -32,6 +58,7 @@ export class ProductService {
           }  
         }
     ]);
+    
 
     return products;
   }

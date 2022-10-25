@@ -17,26 +17,7 @@ export class CategoryService {
     return categories;
   }
 
-  async getCategoriesAggregate(): Promise<Category[]> {
-    const categories = await this.categoryModel
 
-      .aggregate([{
-        $lookup: {
-          from: "products",
-          localField: "_id",
-          foreignField: "categories",
-          as: "class-category"
-        }
-      },
-      {
-        $match: {
-          "class-category": { $ne: [] }
-        }
-      }
-      ]);
-
-    return categories;
-  }
 
 
   async getCategory(categoryID: string): Promise<Category> {
