@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { Controller,Get,Post,Put,Delete,Res,HttpStatus,Body,Param,NotFoundException, Query} from '@nestjs/common';
+import { Controller,Get,Post,Put,Delete,Res,HttpStatus,Body,Param,NotFoundException, Query, /*Req*/} from '@nestjs/common';
 
 import { CreateProductDTO } from './dto/product.dto';
 
@@ -20,17 +20,37 @@ export class ProductController {
         });
     }
 
-    @Get('/:categoryName')
-    async getProductsByCategory(@Res() res,@Param('categoryName') categoryName){
-        const products = await this.productService.getProductsByCategory(categoryName);
-        return res.status(HttpStatus.OK).json(
-            products
-        )
-    }
+
+
+
+
+
 
     @Get('/')
-    async getProducts(@Res() res){
-        const products = await this.productService.getProducts();
+    async getProductsByCategory(@Res() res,@Query() query: any){
+
+        //const nameCategory: any = query.categories;
+        
+        // if(!nameCategory){
+        //     throw new NotFoundException('Producto no encontrado');
+        // }
+
+        const products = await this.productService.getProductsByCategory(query);
+
+       
+        return res.status(HttpStatus.OK).json(products)
+    }
+
+
+
+
+
+
+
+
+    @Get('/')
+    async getProducts(@Res() res,@Query() query: any){
+        const products = await this.productService.getProductsByCategory(query);
         return res.status(HttpStatus.OK).json(
             products
         )

@@ -5,6 +5,7 @@ import { InjectModel } from '@nestjs/mongoose';
 
 import { Product } from './interfaces/product.interface';
 import { CreateProductDTO } from './dto/product.dto';
+//import { CreateCategoryDTO } from 'src/category/dto/category.dto';
 
 
 @Injectable()
@@ -14,29 +15,43 @@ export class ProductService {
   ) { }
 
 
-  async getProductsByCategory(categoryName: string):Promise<Product[]>{
-    const products = await this.productModel
-    .aggregate([{
-      $lookup: {
+  async getProductsByCategory(query:CreateProductDTO):Promise<Product[]>{
+    
+    const filters = [];
+
+    filters.push(
+      {
+        $lookup: {
           from: "categories",
           localField: "categories",
           foreignField: "_id",
           as: "category"
-      }},
-      {
+        }
+      } 
+    );
+
+    if(query.categories && query.categories != 'null'){
+      filters.push({
         $match:{
           $expr:{
-            $eq:['$categories',{$toObjectId: categoryName}]
-          }
-          
+            $eq:['$categories',{$toObjectId: query.categories}]
+          }   
         }  
-      }
-    
-    ])
+      })
+    }
 
-    return products;
+    
+
+    console.log(query)
+    const queryAggregate = await this.productModel.aggregate(filters)
+    return queryAggregate;
   }
-//unwind checar
+
+
+
+
+
+  
   async getProducts(): Promise<Product[]> {
 
     const products = await this.productModel

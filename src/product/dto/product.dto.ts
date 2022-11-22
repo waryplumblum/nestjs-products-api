@@ -1,9 +1,10 @@
+/* eslint-disable prettier/prettier */
 export class CreateProductDTO{
     readonly name: string;
     readonly description: string;
     readonly imageURL: string;
     readonly price: number;
     readonly createdAt:Date;
-    readonly categories: string;
+    readonly categories: string|any;
    // readonly categorys: string;
 }
